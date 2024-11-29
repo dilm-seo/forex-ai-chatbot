@@ -4,16 +4,7 @@ import { RSSFeed, NewsItem } from '../types';
 import { useSettingsStore } from '../store/settings';
 
 const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
-const RSS_URL = 'https://www.forexlive.com/feed/centralbank';
-
-// Function to fetch and log the RSS feeds
-async function fetchRSSFeeds() {
-    for (const url of RSS_FEEDS) {
-        try {
-            const response = await fetch(CORS_PROXY + encodeURIComponent(url));
-            if (response.ok) {
-                const data = await response.text();
-                console.log(`
+const RSS_URL = 'https://www.forexlive.com/feed/news/';
 
 
 export const fetchNews = async (): Promise<NewsItem[]> => {
