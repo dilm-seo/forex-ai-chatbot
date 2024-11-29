@@ -6,6 +6,7 @@ import { CostEstimate } from '../utils/openai';
 
 const PRESET_QUESTIONS = [
   "Quel est le sentiment général du marché actuellement ?",
+  "Fournis moi un signal (paire, sens, confiance)",
   "Identifiez les paires de devises les plus volatiles",
   "Quelles sont les meilleures opportunités de trading ?",
   "Analysez l'impact des dernières nouvelles sur EUR/USD",
