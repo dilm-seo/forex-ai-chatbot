@@ -8,7 +8,7 @@ import { fr } from 'date-fns/locale';
 
 const PRESET_QUESTIONS = [
   "Quelles sont les meilleures opportunités de trading actuellement ?",
-  "Qu'en est t'il des dernières news de la FED ?",
+  "Qu'en est t'il des dernières news des Banques centrales Fed, BCE, BoJ, BoE, BNS, BoC, RBA, RBNZ et PBoC ? Quel impact ?",
   "Analysez les conditions du marché pour les devises majeures",
   "Quels sont les mouvements les plus probables sur les principales paires ?",
   "Fournis moi une opportunité de trade sur l'or (XAUUSD) pour aujourd'hui ?",
