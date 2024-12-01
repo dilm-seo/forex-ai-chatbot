@@ -8,11 +8,10 @@ import { fr } from 'date-fns/locale';
 
 const PRESET_QUESTIONS = [
   "Quelles sont les meilleures opportunités de trading actuellement ?",
-  "Identifiez les paires de devises avec le plus fort potentiel",
-  "Analysez les conditions du marché pour EUR/USD",
+  "Analysez les conditions du marché pour les devises majeures",
   "Quels sont les mouvements les plus probables sur les principales paires ?",
-  "Y a-t-il des signaux techniques importants à surveiller ?",
-  "Quelles devises montrent le plus de force ?",
+  "Quels sont les news à surveiller aujourd'hui ?",
+  "Quelles devises montrent le plus de force et de faiblesse ?",
   "Identifiez les meilleures configurations risk/reward"
 ];
 
