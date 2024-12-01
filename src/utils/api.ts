@@ -6,7 +6,6 @@ import { useSettingsStore } from '../store/settings';
 const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 const RSS_URL = 'https://www.forexlive.com/feed/news/';
 
-
 export const fetchNews = async (): Promise<NewsItem[]> => {
   try {
     const response = await axios.get(`${CORS_PROXY}${encodeURIComponent(RSS_URL)}`);

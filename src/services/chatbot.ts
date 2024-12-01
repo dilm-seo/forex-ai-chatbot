@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 import { useSettingsStore } from '../store/settings';
 import { NewsItem } from '../types/news';
 import { estimateCost, CostEstimate } from '../utils/openai';
+import { analyzeMarketConditions, identifyTradingOpportunities, getTradingSuggestion } from './analysis';
 
 let newsContext: NewsItem[] = [];
 
@@ -39,10 +40,67 @@ const formatResponse = (content: string): string => {
 </div>`;
 };
 
+const enhanceResponseWithAnalysis = (content: string, message: string): string => {
+  if (message.toLowerCase().includes('opportunité') || 
+      message.toLowerCase().includes('trading') || 
+      message.toLowerCase().includes('trade')) {
+    const marketConditions = analyzeMarketConditions(newsContext);
+    const opportunities = identifyTradingOpportunities(marketConditions);
+    const suggestion = getTradingSuggestion(opportunities);
+
+    return `
+      ${content}
+      <div class="mt-4 pt-4 border-t border-indigo-100">
+        <p class="font-medium text-indigo-800 mb-2">Analyse approfondie:</p>
+        ${suggestion}
+      </div>
+    `;
+  }
+  return content;
+};
+
 interface ChatResponse {
   content: string;
   costEstimate: CostEstimate;
+  suggestions?: string[];
 }
+
+const generateSuggestions = async (message: string, response: string): Promise<string[]> => {
+  const settings = useSettingsStore.getState();
+  const openai = new OpenAI({
+    apiKey: settings.apiKey,
+    dangerouslyAllowBrowser: true
+  });
+
+  try {
+    const suggestionResponse = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        {
+          role: 'system',
+          content: 'Vous êtes un assistant spécialisé dans le trading forex. Générez 3 questions de suivi pertinentes basées sur la conversation précédente. Les questions doivent être courtes, précises et orientées trading.'
+        },
+        {
+          role: 'user',
+          content: `Question de l'utilisateur: "${message}"\nRéponse précédente: "${response}"\n\nGénérez 3 questions de suivi pertinentes.`
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 150
+    });
+
+    const suggestions = suggestionResponse.choices[0].message.content
+      ?.split('\n')
+      .filter(line => line.trim())
+      .map(line => line.replace(/^\d+\.\s*/, '').trim())
+      .slice(0, 3) || [];
+
+    return suggestions;
+  } catch (error) {
+    console.error('Erreur lors de la génération des suggestions:', error);
+    return [];
+  }
+};
 
 export const getChatbotResponse = async (message: string): Promise<ChatResponse> => {
   const settings = useSettingsStore.getState();
@@ -75,8 +133,9 @@ export const getChatbotResponse = async (message: string): Promise<ChatResponse>
       max_tokens: 500
     });
 
-    const content = response.choices[0].message.content || 'Désolé, je n\'ai pas pu analyser cette demande.';
-    const formattedContent = formatResponse(content);
+    let content = response.choices[0].message.content || 'Désolé, je n\'ai pas pu analyser cette demande.';
+    content = formatResponse(content);
+    content = enhanceResponseWithAnalysis(content, message);
     
     const costEstimate = estimateCost(
       settings.model,
@@ -84,9 +143,12 @@ export const getChatbotResponse = async (message: string): Promise<ChatResponse>
       content.length
     );
 
+    const suggestions = await generateSuggestions(message, content);
+
     return {
-      content: formattedContent,
-      costEstimate
+      content,
+      costEstimate,
+      suggestions
     };
   } catch (error) {
     console.error('Erreur lors de la communication avec OpenAI:', error);
