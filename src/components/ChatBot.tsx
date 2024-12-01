@@ -14,7 +14,7 @@ const PRESET_QUESTIONS = [
   "Quelles devises montrent le plus de force et de faiblesse actuellement?",
   "Identifiez les meilleures configurations risk/reward",
   "Fournis moi 3 opportunités de trades sur les devises majeures",
-  "Quel est la news la plus importante identifée ?"
+  "Quelle est la news la plus importante identifée ? Détails en français."
 ];
 
 interface Message {
