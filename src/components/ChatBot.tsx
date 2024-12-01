@@ -10,7 +10,7 @@ const PRESET_QUESTIONS = [
   "Quelles sont les meilleures opportunités de trading actuellement ?",
   "Analysez les conditions du marché pour les devises majeures",
   "Quels sont les mouvements les plus probables sur les principales paires ?",
-  "Quel est le sentiment pour l'or (XAUUSD) actuellement ?",
+  "Quel est le sentiment et direction du prix de l'or (XAUUSD) aujourd'hui ?",
   "Quelles devises montrent le plus de force et de faiblesse ?",
   "Identifiez les meilleures configurations risk/reward",
   "Fournis moi 3 siganux sur devises corrélées afin de minimiser mon risque",
